@@ -2,8 +2,6 @@
 #include "settings.h"
 #include "numerics.h"
 
-#include <iostream>
-
 void IMovable::add_forces(Variables &next, Variables const &last)
 {
 	const double * const velocities = &last.vecs.velocity.get_x();
@@ -14,7 +12,9 @@ void IMovable::add_forces(Variables &next, Variables const &last)
 	next.vecs.force[2] -= x2; // minus 'cause g is positive in value
 	//drag forces F_d = 1/2 * gas_density * square_length_of_velocity * C_d * cross_section_area
 	double F_d_constants = 1.0/2.0 * last.atm.air_density * Settings::getInstance().get_constants().sphere_C_d * last.coeffs.effective_area;
-	//std::cout << F_d_constants << "\n";
+	if( F_d_constants < 0.0001 ) // cutoff value
+		F_d_constants = 0.0;
+		
 	for(unsigned i = 0 ; i < 3 ; i++)
 	{
 	    next.vecs.force[i] += -F_d_constants * velocities[i]; // minus ... opposite direction to velocity
@@ -140,52 +140,5 @@ IMovable::IMovable(double _mass, std::string _material, std::string _name, enums
 	variables[1] = Variables( initial_vec, init_coeffs, initial_atm );
 	
 	deployment_level = 0.0;
-}
-
-Rocket::Rocket(double ms, std::string mat, std::string name, Variables_vectors initial_vec, Rocket_var rv)
- : IMovable(ms, mat, name, enums::Rocket_fuel, initial_vec)
-{
-	rocket_var.push_back(rv);
-	
-	if( this->get_mass_of_system() * Settings::getInstance().get_constants().g_acc > sqrt( numerics::get_vector_length_squared( rocket_var[0].thrust ) ) )
-	{
-		std::string msg("Rocket thrust too low for this data!");
-		throw msg;
-	}
-}
-
-void Rocket::add_special_forces(Variables &next, Variables const &last)
-{
-	// check if we have enough fuel!!!
-	if( last.coeffs.stage != enums::Rocket_fuel )
-	{
-		return;
-	}
-	
-	double &fuel = rocket_var[ rocket_var.size() -1 ].fuel_mass;
-	if( fuel > 0.0  )
-	{
-		// add thrust
-		double ratio = 1.0;
-		if( fuel > Settings::getInstance().get_params().dt * rocket_var[ rocket_var.size() -1 ].second_fuel_intake )
-		{
-			fuel -= Settings::getInstance().get_params().dt * rocket_var[ rocket_var.size() -1 ].second_fuel_intake;
-		}
-		else
-		{
-			// cannot operate for the whole period... calc how many ...
-			ratio = fuel / ( Settings::getInstance().get_params().dt * rocket_var[ rocket_var.size() -1 ].second_fuel_intake );
-			fuel = 0.0;
-		}
-		
-		const double * const thrust = &rocket_var[ rocket_var.size() -1 ].thrust.get_x();
-		for(unsigned i = 0 ; i < 3 ; i++)
-		{
-	    	next.vecs.force[i] += ratio * thrust[i];
-		}
-
-	    if( fuel <= 0.0 )
-	    	next.coeffs.stage = enums::Free_flight;
-	}
 }
 

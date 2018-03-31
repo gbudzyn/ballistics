@@ -1,8 +1,6 @@
 #include "engine.h"
 #include "settings.h"
 
-#include <iostream>
-
 Engine::Engine()
 {
 	bool any_active = true; 
@@ -21,19 +19,23 @@ Engine::Engine()
 										  "aluminium", 
 										  "alu_ball", 
 										  init_vec );
-    //	movables.push_back(ball1);
+    	movables.push_back(ball1);
     	
     	IMovable *ball2 = new Solid_ball( 200.0, 
 										  "steel", 
 										  "steel_ball", 
 										  init_vec );
-   // 	movables.push_back(ball2);
+    	movables.push_back(ball2);
     	
+    	std::vector<Rocket_stage_var> rsv;
+    	rsv.push_back( Rocket_stage_var( 10.0, 22.0, 0.5, Vector3D(4000.0, 0.0, 6000.0) ) );
+    	rsv.push_back( Rocket_stage_var( 10.0, 21.0, 0.5, Vector3D(400.0, 0.0, 5000.0) ) );
+    	rsv.push_back( Rocket_stage_var( 10.0, 20.0, 0.5, Vector3D(1000.0, 0.0, 4000.0) ) );
     	IMovable *rocket1 = new Rocket( 200.0, 
 										"steel", 
 										"steel_rocket", 
 										Variables_vectors( Vector3D(), Vector3D(), Vector3D() ), 
-										Rocket_var( Vector3D(4000.0, 0.0, 6000.0), 50.0, 0.5 ) );
+										rsv);
     	movables.push_back(rocket1);
     	
     	streamer = new Streamer( movables );

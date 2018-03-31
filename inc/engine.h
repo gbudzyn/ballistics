@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "movable.h"
+#include "rocket.h"
 #include "streamer.h"
 
 class Engine

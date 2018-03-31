@@ -76,18 +76,5 @@ struct Variables
 	std::string to_str(bool brackets) const;
 };
 
-struct Rocket_var
-{
-	Vector3D thrust; // can be directional, in N
-	double fuel_mass; // kg
-	double second_fuel_intake; // kg/s
-	Rocket_var( Vector3D _thrust, double _fuel, double _sfi )
-	 : thrust(_thrust),
-	   fuel_mass(_fuel),
-	   second_fuel_intake(_sfi)
-	   {}
-};
-
-
 #endif
 
