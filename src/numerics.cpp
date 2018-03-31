@@ -93,10 +93,10 @@ double get_air_temperature(double height)
 	// temperature changes lineary with altitude in some regions... in others is constant
 	double ret = it->second.standard_temperature + it->second.temp_lapse_rate * (height - it->second.height);
 	
-	if( ret <= 0.0 )
+	//SET minimum ... dependen on many things
+	if(ret < 200.0)
 	{
-		std::string msg("Zero Kelvin reached, congrats!");
-		throw msg;
+		return 200.0;
 	}
 	
 	return ret;
@@ -115,7 +115,7 @@ double get_air_density(double height)
 	// if height > max in table... return max ... do not extrapolate
 	if( it == weather.air_table.end() )
 	{
-		(--it)->second.mass_density; 
+		return (--it)->second.mass_density; 
 	}
 	// bottom layer
 	--it;
@@ -176,9 +176,10 @@ double get_air_pressure(double height)
 		return it->second.static_pressure;
 	}
 	// if height > max in table... return max ... do not extrapolate
+	
 	if( it == weather.air_table.end() )
 	{
-		(--it)->second.static_pressure; 
+		return (--it)->second.static_pressure; 
 	}
 	// bottom layer
 	--it;

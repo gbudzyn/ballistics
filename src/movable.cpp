@@ -50,6 +50,13 @@ void IMovable::get_next_step()
 	
 	//BY YOUR POWERS COMBINED
 	variables.push_back( next );
+		
+	// CHECK for escape velocity ... change to escape velocity as a function of height!
+	if( next.vecs.velocity[2] > 10000.0 )
+	{
+		std::string msg("ERROR escape velocity reached");
+		throw msg;
+	}
 }
 
 void IMovable::integrate(Variables &next, Variables const &last)
