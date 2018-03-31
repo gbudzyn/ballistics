@@ -5,9 +5,9 @@ Engine::Engine()
 {
 	bool any_active = true; 
 	
-	double V_0_x = 4000.0;
+	double V_0_x = 400.0;
     double V_0_y = 0.0;
-    double V_0_z = 3000.0;
+    double V_0_z = 300.0;
     
     Variables_vectors init_vec( Vector3D(),
 								Vector3D(V_0_x, V_0_y, V_0_z),
@@ -31,7 +31,7 @@ Engine::Engine()
 										"steel", 
 										"steel_rocket", 
 										Variables_vectors( Vector3D(), Vector3D(), Vector3D() ), 
-										Rocket_var( Vector3D(2000.0, 0.0, 10000.0), 100.0, 1.0 ) );
+										Rocket_var( Vector3D(200.0, 0.0, 5000.0), 10.0, 1.0 ) );
     	movables.push_back(rocket1);
 	}
 	catch(...)

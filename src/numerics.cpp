@@ -72,19 +72,95 @@ double get_g_acc(double height)
 	return Settings::getInstance().get_constants().g_acc * (1.0 - 2.0 * height / Settings::getInstance().get_constants().earth_radius ) ;
 }
 
+// https://en.wikipedia.org/wiki/Barometric_formula
 double get_air_temperature(double height)
 {
+	
 	return linear_interpolation( Settings::getInstance().get_weather().air_temperature, height );
 }
 
+// https://en.wikipedia.org/wiki/Barometric_formula
 double get_air_density(double height)
 {
-	return linear_interpolation( Settings::getInstance().get_weather().air_density, height );
+	const Settings::Weather &weather = Settings::getInstance().get_weather();
+	std::map<double, Settings::Air_table>::const_iterator it = weather.air_table.lower_bound(height);
+	// below sea level.. do not extrapolate
+	if( it == weather.air_table.begin() )
+	{
+		return it->second.mass_density;
+	}
+	// if height > max in table... return max ... do not extrapolate
+	if( it == weather.air_table.end() )
+	{
+		(--it)->second.mass_density; 
+	}
+	// bottom layer
+	--it;
+	
+	return get_air_param_from_table( it->second.mass_density, height, 1.0, it);
 }
 
+double barometric_formula_1(double val_B, double TB, double LB, double hB, double height, double addition)
+{
+	double pow_1 = TB / ( TB + LB * (height - hB) );
+	double pow_2 = addition + numerics::get_g_acc( height ) * 
+					Settings::getInstance().get_constants().air_molar_mass / 
+					( Settings::getInstance().get_constants().universal_gas_constant * LB );
+	return val_B * pow( pow_1 , pow_2 );
+}
+
+double barometric_formula_2(double val_B, double TB, double LB, double hB, double height)
+{
+	double up = numerics::get_g_acc( height ) * Settings::getInstance().get_constants().air_molar_mass * (height - hB);
+	double down = Settings::getInstance().get_constants().universal_gas_constant * TB;
+	return val_B * exp( - up / down );
+}
+
+double get_air_param_from_table(double value_0, double height, double addition, std::map<double, Settings::Air_table>::const_iterator const &it)
+{
+	double ret = 0.0;
+	// get the bottom layer!
+	// evil flaating point comparison
+	if( it->second.temp_lapse_rate != 0.0 )
+	{
+		ret = barometric_formula_1( value_0,
+									it->second.standard_temperature,
+									it->second.temp_lapse_rate,
+									it->second.height,
+									height,
+									addition );
+	}
+	else
+	{
+		ret = barometric_formula_2( value_0,
+									it->second.standard_temperature,
+									it->second.temp_lapse_rate,
+									it->second.height,
+									height);
+	}
+	
+	return ret;
+}
+
+// https://en.wikipedia.org/wiki/Barometric_formula
 double get_air_pressure(double height)
 {
-	return 10132250.0;
+	const Settings::Weather &weather = Settings::getInstance().get_weather();
+	std::map<double, Settings::Air_table>::const_iterator it = weather.air_table.lower_bound(height);
+	// below sea level.. do not extrapolate
+	if( it == weather.air_table.begin() )
+	{
+		return it->second.static_pressure;
+	}
+	// if height > max in table... return max ... do not extrapolate
+	if( it == weather.air_table.end() )
+	{
+		(--it)->second.static_pressure; 
+	}
+	// bottom layer
+	--it;
+	
+	return get_air_param_from_table( it->second.static_pressure, height, 0.0, it);
 }
 
 }

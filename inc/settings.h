@@ -18,11 +18,28 @@ public:
 		double dt;
 		double current_time;
 	};
+	
+	struct Air_table
+	{
+		double height; // in meters
+		double static_pressure; // in Pascals
+		double mass_density; // kg/m^3
+		double standard_temperature; // in Kelvins
+		double temp_lapse_rate;
+		Air_table(double _height, double _stat_press, double _mass_dens, double _std_temp, double _tlr)
+		 : height(_height),
+		   static_pressure(_stat_press),
+		   mass_density(_mass_dens),
+		   standard_temperature(_std_temp),
+		   temp_lapse_rate(_tlr)
+		 {}
+	};
+	
 	struct Weather
 	{
+		std::map<double, Air_table> air_table;
+		
 		std::map<double, double> air_temperature;
-		std::map<double, double> air_pressure;
-		std::map<double, double> air_density;
 	};
 	
 	struct Material_coeffs
@@ -36,6 +53,8 @@ public:
 		double pi;
 		double sphere_C_d;
 		double earth_radius;
+		double universal_gas_constant;
+		double air_molar_mass;
 		std::map<std::string, Material_coeffs > material_coeffs;
 	};
 	
@@ -67,7 +86,8 @@ private:
     Constants constants;
     Weather weather;
     
-    void load_file(std::string file_name, std::map<double, double> &container);
+	void load_file(std::string file_name, std::map<double, double> &container);
+	void load_air_table(std::string file_name);
 };
 
 

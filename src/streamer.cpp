@@ -22,6 +22,7 @@ void streamer::stream_all(Engine const &engine)
 			const double &eff_area = it_var->coeffs.effective_area;
 			const double &air_temp = it_var->atm.air_temperature;
 			const double &air_dens = it_var->atm.air_density;
+			const double &air_press = it_var->atm.air_pressure;
 			const double &actual_g_acc = it_var->atm.actual_g_acc;
 			
 			file_RK << t << " " << pos.to_str(brackets) << 
@@ -30,6 +31,7 @@ void streamer::stream_all(Engine const &engine)
 								   eff_area << " " << 
 								   air_temp << " " << 
 								   air_dens << " " <<
+								   air_press << " " <<
 								   actual_g_acc << " " <<
 								   enums::to_string(it_var->coeffs.stage) << "\n";
 		}

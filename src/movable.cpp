@@ -11,7 +11,7 @@ void IMovable::add_forces(Variables &next, Variables const &last)
 	// FORCES
 	//gravity force - dependent on the height! to be implemented
 	double x2 = this->get_mass_of_system() * last.atm.actual_g_acc;
-	next.vecs.force[2] += x2;
+	next.vecs.force[2] -= x2; // minus 'cause g is positive in value
 	//drag forces F_d = 1/2 * gas_density * square_length_of_velocity * C_d * cross_section_area
 	double F_d_constants = 1.0/2.0 * last.atm.air_density * Settings::getInstance().get_constants().sphere_C_d * last.coeffs.effective_area;
 	//std::cout << F_d_constants << "\n";
@@ -135,7 +135,7 @@ Rocket::Rocket(double ms, std::string mat, std::string name, Variables_vectors i
 {
 	rocket_var.push_back(rv);
 	
-	if( -this->get_mass_of_system() * Settings::getInstance().get_constants().g_acc > sqrt( numerics::get_vector_length_squared( rocket_var[0].thrust ) ) )
+	if( this->get_mass_of_system() * Settings::getInstance().get_constants().g_acc > sqrt( numerics::get_vector_length_squared( rocket_var[0].thrust ) ) )
 	{
 		std::string msg("Rocket thrust too low for this data!");
 		throw msg;
