@@ -19,21 +19,18 @@ public:
 	{
 		return active;
 	}
-	const std::vector<Variables> &get_variables() const
+	const Variables get_current_variables() const
 	{
-		return variables;
-	}
-	const Variables &get_last_variables() const
-	{
-		return variables[ variables.size() - 1 ];
+		return variables[current_step];
 	}
 protected:
-	std::vector<Variables> variables;
 	std::string material;
 	std::string name;
 	bool active;
 	double deployment_level;
 	double mass;
+	int current_step;
+	std::vector<Variables> variables; // before and after integration
 	
 	// CHANGE THIS FOR NICE GROUND CHECKING
 	virtual bool check_for_deployment();
@@ -43,7 +40,6 @@ protected:
 		// no special forces as a default beh
 	}
 	void integrate(Variables &next, Variables const &last);
-	
 	virtual double get_mass_of_system() = 0;
 	
 private:

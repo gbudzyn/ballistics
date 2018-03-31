@@ -41,6 +41,7 @@ struct Atmospheric_variables
 	   air_density(density),
 	   actual_g_acc(g_acc)
 	   {}
+	std::string to_str() const;
 };
 
 struct Variables_coeffs
@@ -57,6 +58,7 @@ struct Variables_coeffs
 	   time(_time),
 	   stage(_stage)
 	{}
+	std::string to_str() const;
 };
 
 struct Variables
@@ -71,6 +73,7 @@ struct Variables
 	   coeffs(_coeffs),
 	   atm(_atm)
 	   {}
+	std::string to_str(bool brackets) const;
 };
 
 struct Rocket_var

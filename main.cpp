@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "engine.h"
-#include "streamer.h"
 
 int main(int argc, char *argv[])
 {   
@@ -9,8 +8,6 @@ int main(int argc, char *argv[])
 	{
 		Engine engine;
 		while( engine.run() );
-		
-		streamer::stream_all( engine );
 	}
 	catch(std::string const &ex)
 	{

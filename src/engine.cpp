@@ -1,6 +1,8 @@
 #include "engine.h"
 #include "settings.h"
 
+#include <iostream>
+
 Engine::Engine()
 {
 	bool any_active = true; 
@@ -19,13 +21,13 @@ Engine::Engine()
 										  "aluminium", 
 										  "alu_ball", 
 										  init_vec );
-    	movables.push_back(ball1);
+    //	movables.push_back(ball1);
     	
     	IMovable *ball2 = new Solid_ball( 200.0, 
 										  "steel", 
 										  "steel_ball", 
 										  init_vec );
-    	movables.push_back(ball2);
+   // 	movables.push_back(ball2);
     	
     	IMovable *rocket1 = new Rocket( 200.0, 
 										"steel", 
@@ -33,6 +35,8 @@ Engine::Engine()
 										Variables_vectors( Vector3D(), Vector3D(), Vector3D() ), 
 										Rocket_var( Vector3D(4000.0, 0.0, 6000.0), 50.0, 0.5 ) );
     	movables.push_back(rocket1);
+    	
+    	streamer = new Streamer( movables );
 	}
 	catch(...)
 	{
@@ -54,7 +58,7 @@ void Engine::get_next_step()
 			any_active = true;
 		}
 		
-		//std::cout << (*it)->get_last_variables().vecs.velocity.to_str() << "\n";
+		streamer->stream( *it );
 	}
 }
 

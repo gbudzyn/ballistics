@@ -25,15 +25,16 @@ void IMovable::add_forces(Variables &next, Variables const &last)
 
 void IMovable::get_next_step()
 {	
-	Variables &last = variables[ variables.size() - 1 ];
+	// wizardry begins here
+	Variables &last = variables[ current_step++ ];
+	current_step %= 2; // only 0 or 1 is possible!
+	// temp_difference for new effective area calculations
+	double temp_diff = last.atm.air_temperature - variables[ current_step ].atm.air_temperature;
 	
 	// last coefficients as a base and change only those that are updated
 	Variables_coeffs next_coeffs( last.coeffs );
 	Atmospheric_variables next_atm( last.atm );
-	// temp_difference for new effective area calculations
-	double temp_diff = 0.0;
-	if( variables.size() > 1 )
-		temp_diff = last.atm.air_temperature - variables[ variables.size() - 2 ].atm.air_temperature;
+	
 	next_coeffs.effective_area = numerics::get_new_area_given_temperature_change( last.coeffs.effective_area, last.coeffs.temp_coeff, temp_diff );
 	next_coeffs.time = Settings::getInstance().get_params().current_time;
 	Variables next( Variables_vectors( Vector3D(), Vector3D(), Vector3D() ),
@@ -49,7 +50,7 @@ void IMovable::get_next_step()
 		active = ( false == check_for_deployment() );
 	
 	//BY YOUR POWERS COMBINED
-	variables.push_back( next );
+	variables[current_step] = next;
 		
 	// CHECK for escape velocity ... change to escape velocity as a function of height!
 	if( next.vecs.velocity[2] > 10000.0 )
@@ -94,7 +95,7 @@ void IMovable::integrate(Variables &next, Variables const &last)
 // will enter here only in Stage_3
 bool IMovable::check_for_deployment()
 {
-	const double * const positions = &variables[ variables.size() - 1 ].vecs.position.get_x();
+	const double * const positions = &variables[ current_step ].vecs.position.get_x();
 	if( positions[2] < deployment_level )
 		return true;
 		
@@ -132,7 +133,11 @@ IMovable::IMovable(double _mass, std::string _material, std::string _name, enums
 									   numerics::get_air_density( height ),
 									   numerics::get_g_acc( height ) );
 	
-	variables.push_back( Variables( initial_vec, init_coeffs, initial_atm ) );
+	current_step = 0; // starting from 0
+	// first steps are the same - easier to implement integration etc.
+	variables.reserve(2);
+	variables[0] = Variables( initial_vec, init_coeffs, initial_atm );
+	variables[1] = Variables( initial_vec, init_coeffs, initial_atm );
 	
 	deployment_level = 0.0;
 }

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "movable.h"
+#include "streamer.h"
 
 class Engine
 {
@@ -16,6 +17,7 @@ public:
 	}
 private:
 	std::vector<IMovable*> movables;
+	Streamer *streamer;
 	bool any_active;	
 	void get_next_step();
 };
