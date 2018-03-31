@@ -25,8 +25,6 @@ Settings::Settings()
 	aluminium.thermal_coeff = 24E-06;
 	constants.material_coeffs.insert( std::make_pair<std::string, Material_coeffs>("aluminium", aluminium) );
 	
-	//loading files
-	load_file("data/air_temperature.txt", weather.air_temperature);
 	load_air_table("data/air_table.txt");
 }
 
@@ -51,30 +49,6 @@ void Settings::load_air_table(std::string file_name)
 			break;
 		
 		weather.air_table.insert( std::make_pair<double, Air_table>(x_0,  Air_table( x_0, x_1, x_2, x_3, x_4 ) ) );
-	}
-}
-
-
-void Settings::load_file(std::string file_name, std::map<double, double> &container)
-{
-	std::fstream file;
-	file.open( file_name.c_str(), std::ios::in );
-	if( false == file.good() )
-	{
-		std::string msg("ERROR: file read ");
-		msg += file_name;
-		throw msg;
-	}
-	
-	std::string line;
-	while( std::getline(file, line) )
-	{
-		std::istringstream iss(line);
-		double x_0, x_1;
-		if( !(iss >> x_0 >> x_1) ) 
-			break;
-		
-		container.insert( std::make_pair<double, double>(x_0, x_1) );
 	}
 }
 

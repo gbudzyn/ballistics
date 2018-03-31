@@ -75,8 +75,31 @@ double get_g_acc(double height)
 // https://en.wikipedia.org/wiki/Barometric_formula
 double get_air_temperature(double height)
 {
+	const Settings::Weather &weather = Settings::getInstance().get_weather();
+	std::map<double, Settings::Air_table>::const_iterator it = weather.air_table.lower_bound(height);
+	//return linear_interpolation( Settings::getInstance().get_weather().air_temperature, height );
+	// below sea level.. do not extrapolate
+	if( it == weather.air_table.begin() )
+	{
+		return it->second.standard_temperature;
+	}
+	// if height > max in table... return max ... do not extrapolate
+	if( it == weather.air_table.end() )
+	{
+		(--it)->second.standard_temperature; 
+	}
+	// bottom layer
+	--it;
+	// temperature changes lineary with altitude in some regions... in others is constant
+	double ret = it->second.standard_temperature + it->second.temp_lapse_rate * (height - it->second.height);
 	
-	return linear_interpolation( Settings::getInstance().get_weather().air_temperature, height );
+	if( ret <= 0.0 )
+	{
+		std::string msg("Zero Kelvin reached, congrats!");
+		throw msg;
+	}
+	
+	return ret;
 }
 
 // https://en.wikipedia.org/wiki/Barometric_formula

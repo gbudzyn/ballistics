@@ -38,8 +38,6 @@ public:
 	struct Weather
 	{
 		std::map<double, Air_table> air_table;
-		
-		std::map<double, double> air_temperature;
 	};
 	
 	struct Material_coeffs

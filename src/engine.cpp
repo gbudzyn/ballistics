@@ -31,7 +31,7 @@ Engine::Engine()
 										"steel", 
 										"steel_rocket", 
 										Variables_vectors( Vector3D(), Vector3D(), Vector3D() ), 
-										Rocket_var( Vector3D(200.0, 0.0, 5000.0), 10.0, 1.0 ) );
+										Rocket_var( Vector3D(200.0, 0.0, 4000.0), 50.0, 0.5 ) );
     	movables.push_back(rocket1);
 	}
 	catch(...)
