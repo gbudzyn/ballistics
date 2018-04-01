@@ -3,6 +3,12 @@
 
 #include "movable.h"
 
+struct Thrust_control
+{
+	double force; // in Newtons
+	double max_angle_of_change; // in radians ... 7deg max? = PI/2 * 7/90
+};
+
 struct Rocket_stage_var
 {
 	double fuel_mass;

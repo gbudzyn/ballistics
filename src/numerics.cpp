@@ -69,7 +69,7 @@ double get_new_area_given_temperature_change( double area, double thermal_coeff,
 // g_h = g_0 * (1.0 - 2.0 * h/R)
 double get_g_acc(double height)
 {
-	return Settings::getInstance().get_constants().g_acc * (1.0 - 2.0 * height / Settings::getInstance().get_constants().earth_radius ) ;
+	return Settings::getInstance().get_constants().g_acc * pow(1.0 + height / Settings::getInstance().get_constants().earth_radius, -2.0 ) ;
 }
 
 // https://en.wikipedia.org/wiki/Barometric_formula
