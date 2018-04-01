@@ -10,7 +10,6 @@ Settings::Settings()
 	
 	constants.g_acc = 9.80665;
 	constants.pi = 3.14159265359;
-	constants.sphere_C_d = 0.47;
 	constants.earth_radius = 6371000.0;
 	constants.universal_gas_constant = 8.3144598;
 	constants.air_molar_mass = 0.0289644;

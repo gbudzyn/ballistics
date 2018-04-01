@@ -49,7 +49,6 @@ public:
 	{
 		double g_acc;
 		double pi;
-		double sphere_C_d;
 		double earth_radius;
 		double universal_gas_constant;
 		double air_molar_mass;

@@ -50,12 +50,14 @@ struct Variables_coeffs
 	double mat_density;
 	double temp_coeff;
 	double time;
+	double drag_C_d;
 	enums::Stages stage;
-	Variables_coeffs(double _mat_density, double _temp_coeff, double _effective_area, double _time, enums::Stages _stage)
+	Variables_coeffs(double _mat_density, double _temp_coeff, double _effective_area, double _time, double _drag_C_d, enums::Stages _stage)
 	 : mat_density(_mat_density),
 	   temp_coeff(_temp_coeff),
 	   effective_area(_effective_area),
 	   time(_time),
+	   drag_C_d(_drag_C_d),
 	   stage(_stage)
 	{}
 	std::string to_str() const;

@@ -43,6 +43,7 @@ std::string Variables_coeffs::to_str() const
 	    << mat_density << " "
 	    << temp_coeff << " "
 	    << time << " "
+	    << drag_C_d << " "
 	    << enums::to_string(stage) << " ";
 	
 	return ret.str();

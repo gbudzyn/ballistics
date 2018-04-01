@@ -11,7 +11,7 @@ void IMovable::add_forces(Variables &next, Variables const &last)
 	double x2 = this->get_mass_of_system() * last.atm.actual_g_acc;
 	next.vecs.force[2] -= x2; // minus 'cause g is positive in value
 	//drag forces F_d = 1/2 * gas_density * square_length_of_velocity * C_d * cross_section_area
-	double F_d_constants = 1.0/2.0 * last.atm.air_density * Settings::getInstance().get_constants().sphere_C_d * last.coeffs.effective_area;
+	double F_d_constants = 1.0/2.0 * last.atm.air_density * last.coeffs.drag_C_d * last.coeffs.effective_area;
 	if( F_d_constants < 0.0001 ) // cutoff value
 		F_d_constants = 0.0;
 		
@@ -125,6 +125,7 @@ IMovable::IMovable(double _mass, std::string _material, std::string _name, enums
 								  it->second.thermal_coeff,
 								  numerics::get_cross_section_sphere( numerics::get_radius_from_mass_density(mass, mat_dens) ),
 								  0.0,
+								  0.47, /// TODO hardcoded drag C_d for sphere
 								  _stage);
 	
 	const double &height = initial_vec.position.get_x(); 
