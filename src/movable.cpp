@@ -28,18 +28,18 @@ void IMovable::get_next_step()
 	// wizardry begins here
 	Variables &last = variables[ current_step++ ];
 	current_step %= 2; // only 0 or 1 is possible!
+	Variables &next = variables[ current_step ];
 	// temp_difference for new effective area calculations
-	double temp_diff = last.atm.air_temperature - variables[ current_step ].atm.air_temperature;
+	double temp_diff = last.atm.air_temperature - next.atm.air_temperature;
 	
-	// last coefficients as a base and change only those that are updated
-	Variables_coeffs next_coeffs( last.coeffs );
-	Atmospheric_variables next_atm( last.atm );
-	
-	next_coeffs.effective_area = numerics::get_new_area_given_temperature_change( last.coeffs.effective_area, last.coeffs.temp_coeff, temp_diff );
-	next_coeffs.time = Settings::getInstance().get_params().current_time;
-	Variables next( Variables_vectors( Vector3D(), Vector3D(), Vector3D() ),
-					next_coeffs,
-					next_atm ); // atmospheric variables are updated after integration
+	// last coefficients as a base and change only those that are updated	
+	next.vecs.zero();
+	next.coeffs = last.coeffs;
+	next.coeffs.effective_area = numerics::get_new_area_given_temperature_change( last.coeffs.effective_area, 
+																				  last.coeffs.temp_coeff, 
+																				  temp_diff );
+	next.coeffs.time = Settings::getInstance().get_params().current_time;
+	// atmospheric variables are updated after integration
 	
 	this->add_forces(next, last);
 	
@@ -48,9 +48,6 @@ void IMovable::get_next_step()
 	
 	if( next.coeffs.stage == enums::Descend )
 		active = ( false == check_for_deployment() );
-	
-	//BY YOUR POWERS COMBINED
-	variables[current_step] = next;
 		
 	// CHECK for escape velocity ... change to escape velocity as a function of height!
 	if( next.vecs.velocity[2] > 10000.0 )

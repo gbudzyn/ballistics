@@ -14,6 +14,11 @@ struct Vector3D
 		x[2] = x2;
 	}
 	
+	void zero()
+	{
+		x[0] = 0.0; x[1] = 0.0; x[2] = 0.0;
+	}
+	
 	std::string to_str(bool brackets = false) const
 	{
 		std::stringstream ret;

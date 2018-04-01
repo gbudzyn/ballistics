@@ -27,6 +27,12 @@ struct Variables_vectors
 	   velocity(vel),
 	   force(fc)
 	   {}
+	void zero()
+	{
+		position.zero();
+		velocity.zero();
+		force.zero();
+	}
 };
 
 struct Atmospheric_variables
