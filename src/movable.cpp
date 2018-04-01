@@ -4,23 +4,31 @@
 
 void IMovable::add_forces(Variables &next, Variables const &last)
 {
-	const double * const velocities = &last.vecs.velocity.get_x();
-	const double * const positions = &last.vecs.position.get_x();
 	// FORCES
-	//gravity force - dependent on the height! to be implemented
-	double x2 = this->get_mass_of_system() * last.atm.actual_g_acc;
-	next.vecs.force[2] -= x2; // minus 'cause g is positive in value
+	add_gravity( next, last );
+	add_drag_force( next, last );
+	this->add_special_forces(next, last);
+}
+
+void IMovable::add_drag_force(Variables &next, Variables const &last)
+{
 	//drag forces F_d = 1/2 * gas_density * square_length_of_velocity * C_d * cross_section_area
 	double F_d_constants = 1.0/2.0 * last.atm.air_density * last.coeffs.drag_C_d * last.coeffs.effective_area;
 	if( F_d_constants < 0.0001 ) // cutoff value
 		F_d_constants = 0.0;
-		
+	
+	const double * const velocities = &last.vecs.velocity.get_x();		
 	for(unsigned i = 0 ; i < 3 ; i++)
 	{
 	    next.vecs.force[i] += -F_d_constants * velocities[i]; // minus ... opposite direction to velocity
 	}
-	
-	this->add_special_forces(next, last);
+}
+
+void IMovable::add_gravity(Variables &next, Variables const &last)
+{
+	//gravity force - dependent on the height! ... but also on angle (implement coriolis effect)
+	double x2 = this->get_mass_of_system() * last.atm.actual_g_acc;
+	next.vecs.force[2] -= x2; // minus 'cause g is positive in value
 }
 
 void IMovable::get_next_step()

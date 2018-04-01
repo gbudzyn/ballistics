@@ -35,10 +35,12 @@ protected:
 	
 	// CHANGE THIS FOR NICE GROUND CHECKING
 	virtual bool check_for_deployment();
-	virtual void add_forces(Variables &next, Variables const &last);
+	void add_forces(Variables &next, Variables const &last);
+	void add_gravity(Variables &next, Variables const &last);
+	void add_drag_force(Variables &next, Variables const &last);
 	virtual void add_special_forces(Variables &next, Variables const &last)
 	{
-		// no special forces as a default beh
+		// no special forces as a default behaviour
 	}
 	void integrate(Variables &next, Variables const &last);
 	
