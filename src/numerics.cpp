@@ -66,7 +66,7 @@ double get_new_area_given_temperature_change( double area, double thermal_coeff,
 // g_h = g_0 * 1.0 / (1.0 + h/R)^2
 // g_h = g_0 * (1.0 + h/R)^(-2)
 // Taylor expansion to simplyfy (h << R)
-// g_h = g_0 * (1.0 - 2.0 * h/R)
+// g_h = g_0 * (1.0 - 2.0 * h/R) ... not sufficient ... moved to normal equation
 double get_g_acc(double height)
 {
 	return Settings::getInstance().get_constants().g_acc * pow(1.0 + height / Settings::getInstance().get_constants().earth_radius, -2.0 ) ;
