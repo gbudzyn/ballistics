@@ -25,8 +25,8 @@ void Streamer::stream(const IMovable * const movable)
 	}
 	
 	*file << Settings::getInstance().get_params().current_time << " " << 
-			 movable->get_mass_of_system() << " " <<
-	         movable->get_current_variables().to_str(false) << "\n"; 
+	         movable->get_current_variables().to_str(false) << " " <<
+			 movable->get_mass_of_system() << "\n"; 
 }
 
 Streamer::~Streamer()

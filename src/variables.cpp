@@ -13,7 +13,7 @@ std::string to_string(Stages stage)
 		case enums::Rocket_fuel: 
 			ret += "Rocket_fuel"; break;
 		case enums::Free_flight: 
-			ret += "Free flight"; break;
+			ret += "Free_flight"; break;
 		case enums::Descend: 
 			ret += "Descend"; break;
 		default: 
