@@ -6,25 +6,16 @@
 
 #include <vector>
 
-struct Ballistic_stages
-{
-	std::vector<Ballistic_stage*> stages;
-	double get_mass() const;
-};
-
 class Ballistic_missile : public IMovable
 {
 public:
-	Ballistic_missile(IMovable_inits _inits, Ballistic_stages bstages)
-	: IMovable( _inits ),
-	  ballistic_stages(bstages)
-	{}
-	virtual double get_mass_of_system() const
-	{
-		return ballistic_stages.get_mass();
-	}
+	Ballistic_missile(IMovable_inits _inits, std::vector<Ballistic_stage*> bstages);
+	virtual double get_mass_of_system() const;
+	double get_pressure_area() const;
+	double get_center_of_mass_Z() const;
+	double get_center_of_pressure_Z() const;
 private:
-	Ballistic_stages ballistic_stages;	
+	std::vector<Ballistic_stage*> stages;
 };
 
 

@@ -19,14 +19,24 @@ public:
 	{
 		return C_d;
 	}
+	double get_offset_H() const
+	{
+		return offset_H;
+	}
+	void update_offset(double new_offset)
+	{
+		offset_H = new_offset;
+	}
 	virtual std::string to_str() const;
 protected:
 	double R;
 	double container_mass;
+	double offset_H;
 	double C_d;
-	Ballistic_stage(double _R, double _container_mass)
+	Ballistic_stage(double _R, double _container_mass, double _offset_H)
 	: R(_R),
-	  container_mass(_container_mass)
+	  container_mass(_container_mass),
+	  offset_H(_offset_H)
 	  {}
 };
 
@@ -49,8 +59,12 @@ public:
 	{
 		return H / 2.0;
 	}
-	Cylinder(double _R, double _container_mass, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density);
+	Cylinder(double _R, double _container_mass, double _offset_H, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density);
 	virtual std::string to_str() const;
+	double get_H() const
+	{
+		return H;
+	}
 protected:
 	double H;
 	double thrust;
@@ -101,7 +115,8 @@ public:
 		return ( 1.0/3.0 * wing.length * wing.height + R * H ) / this->get_pressure_area();
 	}
 	Cylinder_with_wings(double _R, 
-						double _container_mass, 
+						double _container_mass,
+						double _offset_H, 
 						double _H, 
 						double _thrust, 
 						double _fuel_intake_per_second, 
@@ -128,12 +143,13 @@ public:
 	{
 		return H/3.0;
 	}
-	Cone(double _R, double _container_mass, double _H)
-	: Ballistic_stage(_R, _container_mass),
+	Cone(double _R, double _container_mass, double _offset_H, double _H)
+	: Ballistic_stage(_R, _container_mass, _offset_H),
 	  H(_H)
 	  {
 	      C_d = 0.50;
 	  }
+	std::string to_str() const;
 protected:
 	double H;
 };
@@ -154,8 +170,8 @@ public:
 	{
 		return 4.0 / 3.0 * R / M_PI;
 	}
-	Half_sphere(double _R, double _container_mass, double _H)
-	: Ballistic_stage(_R, _container_mass)
+	Half_sphere(double _R, double _container_mass, double _offset_H)
+	: Ballistic_stage(_R, _container_mass, _offset_H)
 	  {
 	  	  C_d = 0.42;
 	  }

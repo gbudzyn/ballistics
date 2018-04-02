@@ -1,8 +1,8 @@
 #include "ballistic_stage.h"
 #include "settings.h"
 
-Cylinder::Cylinder(double _R, double _container_mass, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density)
- : Ballistic_stage(_R, _container_mass),
+Cylinder::Cylinder(double _R, double _container_mass, double _offset_H, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density)
+ : Ballistic_stage(_R, _container_mass, _offset_H),
    H(_H),
    thrust(_thrust),
    fuel_intake_per_second(_fuel_intake_per_second),
@@ -24,8 +24,8 @@ Cylinder::Cylinder(double _R, double _container_mass, double _H, double _thrust,
 	fuel_mass = get_volume( fuel_height ) * fuel_density;
 }
 
-Cylinder_with_wings::Cylinder_with_wings(double _R, double _container_mass, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density, Wing _wing)
- : Cylinder(_R, _container_mass, _H, _thrust, _fuel_intake_per_second, _fuel_density),
+Cylinder_with_wings::Cylinder_with_wings(double _R, double _container_mass, double _offset_H, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density, Wing _wing)
+ : Cylinder(_R, _container_mass, _offset_H, _H, _thrust, _fuel_intake_per_second, _fuel_density),
    wing(_wing)
 {
 	// TODO ... epsilon
@@ -67,7 +67,9 @@ std::string Cylinder::to_str() const
 	    << fuel_intake_per_second << " "
 	    << fuel_density << " "
 	    << fuel_mass << " "
-	    << fuel_height << " ";
+	    << fuel_height << " "
+	    << offset_H << " "
+	    << this->get_mass() << " ";
 	    
 	return ret.str();
 }
@@ -78,7 +80,17 @@ std::string Cylinder_with_wings::to_str() const
 	ret << Cylinder::to_str() << " "
 	    << wing.length << " "
 	    << wing.height << " "
-	    << wing.mass << " ";
+	    << wing.mass << " "
+	    << this->get_mass() << " ";
+	    
+	return ret.str();
+}
+
+std::string Cone::to_str() const
+{
+	std::stringstream ret;
+	ret << Ballistic_stage::to_str() << " "
+	    << H << " ";
 	    
 	return ret.str();
 }
