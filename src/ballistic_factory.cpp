@@ -28,5 +28,5 @@ Ballistic_missile *Ballistic_factory::create_ballistic_missile()
 																								 Vector3D(0.0, 0.0, 0.0) ) );
 	Ballistic_missile *missile = new Ballistic_missile( inits, bstages );
 	
-	
+	return missile;
 }
