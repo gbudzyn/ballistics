@@ -52,6 +52,7 @@ public:
 		double earth_radius;
 		double universal_gas_constant;
 		double air_molar_mass;
+		double epsilon_float;
 		std::map<std::string, Material_coeffs > material_coeffs;
 	};
 	

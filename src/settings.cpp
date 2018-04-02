@@ -14,6 +14,7 @@ Settings::Settings()
 	constants.earth_radius = 6371000.0;
 	constants.universal_gas_constant = 8.3144598;
 	constants.air_molar_mass = 0.0289644;
+	constants.epsilon_float = 0.0001;
 	
 	// ADD TREADING FROM FILE FOR THIS
 	Material_coeffs steel;

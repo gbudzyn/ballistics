@@ -47,7 +47,7 @@ public:
 	}
 	virtual double get_center_of_pressure_Z() const
 	{
-		return H / 2.0 * R;
+		return H / 2.0;
 	}
 	Cylinder(double _R, double _container_mass, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density);
 	virtual std::string to_str() const;
@@ -66,6 +66,18 @@ protected:
 	}
 };
 
+struct Wing
+{
+	double length;
+	double height;
+	double mass;
+	Wing(double _l, double _h, double _m)
+	: length(_l),
+	  height(_h),
+	  mass(_m)
+	  {}
+};
+
 // it can be only as a first stage!!!
 // has 4 right angle triangle wings and is symmetric and not rotating yet
 struct Cylinder_with_wings : public Cylinder
@@ -73,26 +85,31 @@ struct Cylinder_with_wings : public Cylinder
 public:
 	virtual double get_mass() const
 	{
-		return Cylinder::get_mass() + 4.0 * mass_of_wing;
+		return Cylinder::get_mass() + 4.0 * wing.mass;
 	}
 	virtual double get_center_of_mass_Z() const
 	{
-		return ( Cylinder::get_mass() * Cylinder::get_center_of_mass_Z() + 4.0 * mass_of_wing * H / 3.0 ) / this->get_mass();
+		return ( Cylinder::get_mass() * Cylinder::get_center_of_mass_Z() + 4.0 * wing.mass * wing.height / 3.0 ) / this->get_mass();
 	}
 	// 2.0 * wings area 'cause it's not rotating yet
 	virtual double get_pressure_area() const
 	{
-		return 2.0 * R * H + wing_length * H;
+		return Cylinder::get_pressure_area() + wing.length * wing.height;
 	}
 	virtual double get_center_of_pressure_Z() const
 	{
-		return ( 1.0/3.0 * wing_length * H + R * H ) / ( 2.0 * R + wing_length );
+		return ( 1.0/3.0 * wing.length * wing.height + R * H ) / this->get_pressure_area();
 	}
-	Cylinder_with_wings(double _R, double _container_mass, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density, double _wing_length, double _mass_of_wing);
+	Cylinder_with_wings(double _R, 
+						double _container_mass, 
+						double _H, 
+						double _thrust, 
+						double _fuel_intake_per_second, 
+						double _fuel_density, 
+						Wing _wing);
 	virtual std::string to_str() const;
 protected:
-	double wing_length;
-	double mass_of_wing;
+	Wing wing;
 };
 
 // cone does not have a fuel - only as a last stage!

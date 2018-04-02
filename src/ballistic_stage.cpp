@@ -1,4 +1,5 @@
 #include "ballistic_stage.h"
+#include "settings.h"
 
 Cylinder::Cylinder(double _R, double _container_mass, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density)
  : Ballistic_stage(_R, _container_mass),
@@ -23,11 +24,24 @@ Cylinder::Cylinder(double _R, double _container_mass, double _H, double _thrust,
 	fuel_mass = get_volume( fuel_height ) * fuel_density;
 }
 
-Cylinder_with_wings::Cylinder_with_wings(double _R, double _container_mass, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density, double _wing_length, double _mass_of_wing)
+Cylinder_with_wings::Cylinder_with_wings(double _R, double _container_mass, double _H, double _thrust, double _fuel_intake_per_second, double _fuel_density, Wing _wing)
  : Cylinder(_R, _container_mass, _H, _thrust, _fuel_intake_per_second, _fuel_density),
-   wing_length(_wing_length),
-   mass_of_wing(_mass_of_wing)
+   wing(_wing)
 {
+	// TODO ... epsilon
+	// wing height cannot be greater that cylinder height
+	if( wing.height > H + Settings::getInstance().get_constants().epsilon_float ) 
+	{
+		std::string msg("Wing height greater than cylinder!");
+		throw msg;
+	}
+	// center of mass Z should be > center of pressure Z... in order to be stable
+	if(  this->get_center_of_pressure_Z() + Settings::getInstance().get_constants().epsilon_float > this->get_center_of_mass_Z() )
+	{
+		std::string msg("Rocker stage not stable: center_of_pressure > center_of_mass");
+		throw msg;
+	}
+	
 	C_d = Cylinder::get_C_d() + 0.25; // can be calculated... have no idea but should be greater than cylinder
 }
 
@@ -62,8 +76,9 @@ std::string Cylinder_with_wings::to_str() const
 {
 	std::stringstream ret;
 	ret << Cylinder::to_str() << " "
-	    << wing_length << " "
-	    << mass_of_wing << " ";
+	    << wing.length << " "
+	    << wing.height << " "
+	    << wing.mass << " ";
 	    
 	return ret.str();
 }
