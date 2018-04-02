@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <cmath>
 
 Settings::Settings()
 {
@@ -9,7 +10,7 @@ Settings::Settings()
 	params.current_time = 0.0;
 	
 	constants.g_acc = 9.80665;
-	constants.pi = 3.14159265359;
+	constants.pi = M_PI;
 	constants.earth_radius = 6371000.0;
 	constants.universal_gas_constant = 8.3144598;
 	constants.air_molar_mass = 0.0289644;
