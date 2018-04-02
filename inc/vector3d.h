@@ -7,7 +7,7 @@
 
 struct Vector3D
 {	
-	Vector3D(double x0 = 0.0, double x1 = 0.0, double x2 = 0.0)
+	Vector3D(double x0, double x1, double x2)
 	{
 		x[0] = x0; 
 		x[1] = x1; 

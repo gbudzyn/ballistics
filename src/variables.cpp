@@ -5,7 +5,7 @@
 namespace enums
 {
 	
-std::string to_string(Stages stage)
+std::string to_string(Flight_stages stage)
 {	
 	std::string ret;
 	switch(stage)

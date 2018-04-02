@@ -32,7 +32,7 @@ struct Rocket_stage_var
 class Rocket : public IMovable
 {
 public:
-	Rocket(double ms, std::string mat, std::string name, Variables_vectors initial_vec, std::vector<Rocket_stage_var> rsv);
+	Rocket(IMovable_inits _inits, std::vector<Rocket_stage_var> rsv);
 private:
 	std::vector<Rocket_stage_var> rocket_var; // queue might be better
 	virtual double get_mass_of_system() const

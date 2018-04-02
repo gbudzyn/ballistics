@@ -6,10 +6,26 @@
 
 #include "variables.h"
 
+struct IMovable_inits
+{
+	double mass;
+	std::string material;
+	std::string name;
+	enums::Flight_stages stage;
+	Variables_vectors initial_vec;
+	IMovable_inits(double _mass, std::string _material, std::string _name, enums::Flight_stages _stage, Variables_vectors _init_vec)
+	: mass(_mass),
+	  material(_material),
+	  name(_name),
+	  stage(_stage),
+	  initial_vec(_init_vec)
+	  {}
+};
+
 class IMovable
 {	
 public:
-	IMovable(double _mass, std::string _material, std::string name, enums::Stages _stage, Variables_vectors initial_vec);
+	IMovable(IMovable_inits _inits);
 	virtual void get_next_step();
 	std::string get_name() const
 	{
@@ -52,7 +68,7 @@ private:
 class Solid_ball : public IMovable
 {
 public:
-	Solid_ball(double ms, std::string mat, std::string name, Variables_vectors initial_vec);
+	Solid_ball(IMovable_inits _inits);
 private:
 	virtual double get_mass_of_system() const
 	{

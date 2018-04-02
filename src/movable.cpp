@@ -107,15 +107,15 @@ bool IMovable::check_for_deployment()
 	return false;
 }
 
-Solid_ball::Solid_ball(double ms, std::string mat, std::string name, Variables_vectors initial_vec)
- : IMovable(ms, mat, name, enums::Free_flight, initial_vec)
+Solid_ball::Solid_ball(IMovable_inits _inits)
+ : IMovable(_inits)
 {
 }
 
-IMovable::IMovable(double _mass, std::string _material, std::string _name, enums::Stages _stage, Variables_vectors initial_vec) 
-  : mass(_mass),
-    material(_material),
-    name(_name),
+IMovable::IMovable(IMovable_inits _inits) 
+  : mass(_inits.mass),
+    material(_inits.material),
+    name(_inits.name),
     active(true)
 {
 	std::map<std::string, Settings::Material_coeffs>::const_iterator it = Settings::getInstance().get_constants().material_coeffs.find(material);
@@ -131,9 +131,9 @@ IMovable::IMovable(double _mass, std::string _material, std::string _name, enums
 								  numerics::get_cross_section_sphere( numerics::get_radius_from_mass_density(mass, mat_dens) ),
 								  0.0,
 								  0.47, /// TODO hardcoded drag C_d for sphere
-								  _stage);
+								  _inits.stage);
 	
-	const double &height = initial_vec.position.get_x(); 
+	const double &height = _inits.initial_vec.position.get_x(); 
 	Atmospheric_variables initial_atm( numerics::get_air_temperature( height ),
 									   numerics::get_air_pressure( height ),
 									   numerics::get_air_density( height ),
@@ -142,8 +142,8 @@ IMovable::IMovable(double _mass, std::string _material, std::string _name, enums
 	current_step = 0; // starting from 0
 	// first steps are the same - easier to implement integration etc.
 	variables.reserve(2);
-	variables[0] = Variables( initial_vec, init_coeffs, initial_atm );
-	variables[1] = Variables( initial_vec, init_coeffs, initial_atm );
+	variables[0] = Variables( _inits.initial_vec, init_coeffs, initial_atm );
+	variables[1] = Variables( _inits.initial_vec, init_coeffs, initial_atm );
 	
 	deployment_level = 0.0;
 }

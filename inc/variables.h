@@ -6,14 +6,14 @@
 namespace enums
 {
 
-enum Stages
+enum Flight_stages
 {
 	Rocket_fuel, 
 	Free_flight,
 	Descend 
 };
 
-std::string to_string(Stages stage);
+std::string to_string(Flight_stages stage);
 	
 }
 
@@ -57,8 +57,8 @@ struct Variables_coeffs
 	double temp_coeff;
 	double time;
 	double drag_C_d;
-	enums::Stages stage;
-	Variables_coeffs(double _mat_density, double _temp_coeff, double _effective_area, double _time, double _drag_C_d, enums::Stages _stage)
+	enums::Flight_stages stage;
+	Variables_coeffs(double _mat_density, double _temp_coeff, double _effective_area, double _time, double _drag_C_d, enums::Flight_stages _stage)
 	 : mat_density(_mat_density),
 	   temp_coeff(_temp_coeff),
 	   effective_area(_effective_area),

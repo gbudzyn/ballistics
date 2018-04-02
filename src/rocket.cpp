@@ -2,8 +2,8 @@
 #include "settings.h"
 #include "numerics.h"
 
-Rocket::Rocket(double ms, std::string mat, std::string name, Variables_vectors initial_vec, std::vector<Rocket_stage_var> rsv)
- : IMovable(ms, mat, name, enums::Rocket_fuel, initial_vec),
+Rocket::Rocket(IMovable_inits _inits, std::vector<Rocket_stage_var> rsv)
+ : IMovable(_inits),
    rocket_var(rsv)	
 {	
 	if( this->get_mass_of_system() * Settings::getInstance().get_constants().g_acc > sqrt( numerics::get_vector_length_squared( rocket_var[0].thrust ) ) )

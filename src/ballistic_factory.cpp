@@ -21,4 +21,12 @@ Ballistic_missile *Ballistic_factory::create_ballistic_missile()
 	Ballistic_stage *stage_3 = new Cone( 0.5, 100.0, 2.0);
 	std::cout << stage_3->to_str() << "\n";
 	bstages.stages.push_back( stage_3 );
+	
+	////////////////
+	IMovable_inits inits( 0.0, "steel", "steel_balistic", enums::Rocket_fuel, Variables_vectors( Vector3D(0.0, 0.0, 0.0),
+										 														 Vector3D(0.0, 0.0, 0.0), 
+																								 Vector3D(0.0, 0.0, 0.0) ) );
+	Ballistic_missile *missile = new Ballistic_missile( inits, bstages );
+	
+	
 }
