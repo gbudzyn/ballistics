@@ -39,9 +39,7 @@ public:
 	}
 	virtual double get_center_of_mass_Z() const
 	{
-		double ret = 1.0 / this->get_mass();
-		ret *= 1.0 / 2.0 * ( H + fuel_height );
-		return ret;
+		return (  H * container_mass + fuel_mass * fuel_height ) / ( 2.0 * this->get_mass() );
 	}
 	virtual double get_pressure_area() const
 	{
