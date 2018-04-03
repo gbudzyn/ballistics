@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <utility>
 
 Settings::Settings()
 {
@@ -20,13 +21,14 @@ Settings::Settings()
 	Material_coeffs steel;
 	steel.density = 8000;
 	steel.thermal_coeff = 13E-06;
-	constants.material_coeffs.insert( std::make_pair<std::string, Material_coeffs>("steel", steel) );
+    constants.material_coeffs.insert( std::make_pair( std::string("steel"), steel) );
 	Material_coeffs aluminium;
 	aluminium.density = 2700;
 	aluminium.thermal_coeff = 24E-06;
-	constants.material_coeffs.insert( std::make_pair<std::string, Material_coeffs>("aluminium", aluminium) );
+    constants.material_coeffs.insert( std::make_pair( std::string("aluminium"), aluminium) );
 	
-	load_air_table("data/air_table.txt");
+    // HACK.. TODO
+    load_air_table("data/air_table.txt");
 }
 
 void Settings::load_air_table(std::string file_name)
@@ -49,7 +51,7 @@ void Settings::load_air_table(std::string file_name)
 		if( !(iss >> index >> x_0 >> x_1 >> x_2 >> x_3 >> x_4) ) 
 			break;
 		
-		weather.air_table.insert( std::make_pair<double, Air_table>(x_0,  Air_table( x_0, x_1, x_2, x_3, x_4 ) ) );
+        weather.air_table.insert( std::make_pair(x_0,  Air_table( x_0, x_1, x_2, x_3, x_4 ) ) );
 	}
 }
 
