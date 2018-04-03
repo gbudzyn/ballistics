@@ -14,6 +14,7 @@ double calculate_sq_distance(Vector3D const &r1, Vector3D const &r2);
 double calculate_distance(Vector3D const &r1, Vector3D const &r2);
 double linear_interpolation(std::map<double, double> const &data, double point);
 double get_vector_length_squared(Vector3D const &vec);
+double get_vector_length(Vector3D const &vec);
 
 // for sphere
 double get_radius_from_mass_density(double mass, double density);

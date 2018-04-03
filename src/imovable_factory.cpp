@@ -25,9 +25,9 @@ IMovable *IMovable_factory::create(int control)
         break;
 
         case 1:
-            rsv.push_back( Rocket_stage_var( 100.0, 99.0, 1.0, Vector3D(100.0, 0.0, 20000.0) ) );
-            rsv.push_back( Rocket_stage_var( 10.0, 21.0, 0.5, Vector3D(0.0, 0.0, 10000.0) ) );
-            rsv.push_back( Rocket_stage_var( 10.0, 20.0, 0.5, Vector3D(0.0, 0.0, 5000.0) ) );
+            rsv.push_back( Rocket_stage_var( 100.0, 99.0, 1.0, Vector3D(5000.0, 0.0, 15000.0) ) );
+            rsv.push_back( Rocket_stage_var( 10.0, 21.0, 0.5, Vector3D(4000.0, 0.0, 10000.0) ) );
+            rsv.push_back( Rocket_stage_var( 10.0, 20.0, 0.5, Vector3D(1000.0, 0.0, 5000.0) ) );
             inits.stage = enums::Rocket_fuel;
             inits.name = "steel_rocket";
             inits.initial_vec = Variables_vectors( Vector3D(0.0, 0.0, 0.0),

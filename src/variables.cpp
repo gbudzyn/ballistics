@@ -1,4 +1,5 @@
 #include "variables.h"
+#include "numerics.h"
 
 #include <sstream>
 
@@ -55,6 +56,7 @@ std::string Variables::to_str(bool brackets) const
 	ret << vecs.position.to_str(brackets) <<
 	       vecs.velocity.to_str(brackets) <<
 	       vecs.force.to_str(brackets) <<
+	       numerics::get_vector_length( vecs.velocity ) << " " <<
 	       coeffs.to_str() <<
 		   atm.to_str();
 	       

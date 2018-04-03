@@ -14,13 +14,14 @@ void IMovable::add_drag_force(Variables &next, Variables const &last)
 {
 	//drag forces F_d = 1/2 * gas_density * square_length_of_velocity * C_d * cross_section_area
 	double F_d_constants = 1.0/2.0 * last.atm.air_density * last.coeffs.drag_C_d * last.coeffs.effective_area;
-	if( F_d_constants < 0.0001 ) // cutoff value
-		F_d_constants = 0.0;
 	
-	const double * const velocities = &last.vecs.velocity.get_x();		
+	const double * const velocities = &last.vecs.velocity.get_x();
+	double multiplyer = 1.0;
 	for(unsigned i = 0 ; i < 3 ; i++)
-	{
-	    next.vecs.force[i] += -F_d_constants * velocities[i]; // minus ... opposite direction to velocity
+	{	
+		// TODO - REAL PHYSICS after reaching sonic speeds 
+		multiplyer = exp( 1.0 + pow( fabs( velocities[i] ) / 1000.0, last.atm.air_density / 0.5 ) );
+	    next.vecs.force[i] += -F_d_constants * velocities[i] * multiplyer; // minus ... opposite direction to velocity
 	}
 }
 

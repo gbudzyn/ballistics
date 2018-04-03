@@ -16,6 +16,11 @@ double calculate_distance(Vector3D const &r1, Vector3D const &r2)
 	return sqrt( calculate_sq_distance(r1, r2) );
 }
 
+double get_vector_length(Vector3D const &vec)
+{
+	return sqrt( get_vector_length_squared(vec) );
+}
+
 double get_vector_length_squared(Vector3D const &vec)
 {
 	double const * const x1 = &vec.get_x();
