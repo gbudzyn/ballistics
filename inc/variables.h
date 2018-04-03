@@ -52,9 +52,9 @@ struct Atmospheric_variables
 
 struct Variables_coeffs
 {
-	double effective_area;
 	double mat_density;
 	double temp_coeff;
+    double effective_area;
 	double time;
 	double drag_C_d;
 	enums::Flight_stages stage;

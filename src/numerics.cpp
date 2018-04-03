@@ -132,7 +132,7 @@ double barometric_formula_1(double val_B, double TB, double LB, double hB, doubl
 	return val_B * pow( pow_1 , pow_2 );
 }
 
-double barometric_formula_2(double val_B, double TB, double LB, double hB, double height)
+double barometric_formula_2(double val_B, double TB, double hB, double height)
 {
 	double up = numerics::get_g_acc( height ) * Settings::getInstance().get_constants().air_molar_mass * (height - hB);
 	double down = Settings::getInstance().get_constants().universal_gas_constant * TB;
@@ -157,7 +157,6 @@ double get_air_param_from_table(double value_0, double height, double addition, 
 	{
 		ret = barometric_formula_2( value_0,
 									it->second.standard_temperature,
-									it->second.temp_lapse_rate,
 									it->second.height,
 									height);
 	}
